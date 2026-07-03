@@ -1,0 +1,1 @@
+This folder contains images, icons, logos, and other static assets used by the ERP application.

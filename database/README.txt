@@ -1,0 +1,1 @@
+This folder contains database schemas, migration scripts, seed data, and data storage-related files.

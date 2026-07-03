@@ -1,0 +1,1 @@
+This folder contains Docker files, container configuration, and deployment scripts for the ERP project.

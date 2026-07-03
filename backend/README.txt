@@ -1,0 +1,1 @@
+This folder contains backend source code, API logic, server configuration, and business rules for the ERP system.

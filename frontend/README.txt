@@ -1,0 +1,1 @@
+This folder contains frontend assets, UI code, web pages, and client-side logic for the ERP application.

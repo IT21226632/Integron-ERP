@@ -1,0 +1,1 @@
+This folder contains project documentation, user guides, design notes, and technical references.
