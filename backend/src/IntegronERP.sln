@@ -3,6 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegronERP.Api", "IntegronERP.Api\IntegronERP.Api.csproj", "{C41B72C6-EF7A-4F39-91AD-F15D074C3FF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegronERP.SharedKernel", "IntegronERP.SharedKernel\IntegronERP.SharedKernel.csproj", "{B5108A41-C4BD-4032-900F-D5E09875E7F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{E7557A78-1354-447B-9E5A-1EA7C57EA6AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegronERP.Modules.Identity", "Modules\IntegronERP.Modules.Identity\IntegronERP.Modules.Identity.csproj", "{B28DA375-23FB-4E50-AEF8-AAA11FF419D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,5 +18,22 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C41B72C6-EF7A-4F39-91AD-F15D074C3FF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C41B72C6-EF7A-4F39-91AD-F15D074C3FF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C41B72C6-EF7A-4F39-91AD-F15D074C3FF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C41B72C6-EF7A-4F39-91AD-F15D074C3FF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5108A41-C4BD-4032-900F-D5E09875E7F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5108A41-C4BD-4032-900F-D5E09875E7F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5108A41-C4BD-4032-900F-D5E09875E7F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5108A41-C4BD-4032-900F-D5E09875E7F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B28DA375-23FB-4E50-AEF8-AAA11FF419D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B28DA375-23FB-4E50-AEF8-AAA11FF419D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B28DA375-23FB-4E50-AEF8-AAA11FF419D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B28DA375-23FB-4E50-AEF8-AAA11FF419D5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B28DA375-23FB-4E50-AEF8-AAA11FF419D5} = {E7557A78-1354-447B-9E5A-1EA7C57EA6AE}
 	EndGlobalSection
 EndGlobal

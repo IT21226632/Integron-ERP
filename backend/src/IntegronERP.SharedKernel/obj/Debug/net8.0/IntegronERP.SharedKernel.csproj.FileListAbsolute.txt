@@ -1,0 +1,12 @@
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.SharedKernel\bin\Debug\net8.0\IntegronERP.SharedKernel.deps.json
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.SharedKernel\bin\Debug\net8.0\IntegronERP.SharedKernel.dll
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.SharedKernel\bin\Debug\net8.0\IntegronERP.SharedKernel.pdb
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.SharedKernel\obj\Debug\net8.0\IntegronERP.SharedKernel.GeneratedMSBuildEditorConfig.editorconfig
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.SharedKernel\obj\Debug\net8.0\IntegronERP.SharedKernel.AssemblyInfoInputs.cache
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.SharedKernel\obj\Debug\net8.0\IntegronERP.SharedKernel.AssemblyInfo.cs
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.SharedKernel\obj\Debug\net8.0\IntegronERP.SharedKernel.csproj.CoreCompileInputs.cache
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.SharedKernel\obj\Debug\net8.0\IntegronERP.SharedKernel.sourcelink.json
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.SharedKernel\obj\Debug\net8.0\IntegronERP.SharedKernel.dll
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.SharedKernel\obj\Debug\net8.0\refint\IntegronERP.SharedKernel.dll
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.SharedKernel\obj\Debug\net8.0\IntegronERP.SharedKernel.pdb
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.SharedKernel\obj\Debug\net8.0\ref\IntegronERP.SharedKernel.dll

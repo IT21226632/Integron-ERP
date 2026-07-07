@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "7IVJq1rVeViTavn6v3UkLX3aVbZgYB89CJ34kiZUZLk=",
+  "Source": "IntegronERP.Api",
+  "BasePath": "_content/IntegronERP.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
