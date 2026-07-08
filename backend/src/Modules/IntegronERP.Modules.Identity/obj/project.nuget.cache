@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "aR244+OsWCaaGjzbz8IJvrL/TrJd86/etH6MHwrqVo7TTtAA4pqEJGEGL20nad80G9TiVlmY05VzvyWhhtAvNA==",
+  "dgSpecHash": "2TgRtnpvOwrrxsuXc+knYw7BDyEQIakIuOI9tFsIlbtIQGFQq6QPgDffCNZiRcIa81u5lBahboXPSbLu/CvBDQ==",
   "success": true,
   "projectFilePath": "D:\\Integron ERP\\Integron-ERP\\backend\\src\\Modules\\IntegronERP.Modules.Identity\\IntegronERP.Modules.Identity.csproj",
   "expectedPackageFiles": [
