@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "2TgRtnpvOwrrxsuXc+knYw7BDyEQIakIuOI9tFsIlbtIQGFQq6QPgDffCNZiRcIa81u5lBahboXPSbLu/CvBDQ==",
+  "dgSpecHash": "lz8DGSoXUnGmTocGcwoHi6D/PPLOKi33OjJfvorQbqMn8PxRNsnhVYVn6wzf/06Y4BfLeF4qc/ePpOQzqC7EPA==",
   "success": true,
   "projectFilePath": "D:\\Integron ERP\\Integron-ERP\\backend\\src\\Modules\\IntegronERP.Modules.Identity\\IntegronERP.Modules.Identity.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HP\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\mediatr\\12.5.0\\mediatr.12.5.0.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\8.0.10\\microsoft.aspnetcore.cryptography.internal.8.0.10.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\8.0.10\\microsoft.aspnetcore.cryptography.keyderivation.8.0.10.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\8.0.10\\microsoft.aspnetcore.identity.entityframeworkcore.8.0.10.nupkg.sha512",
