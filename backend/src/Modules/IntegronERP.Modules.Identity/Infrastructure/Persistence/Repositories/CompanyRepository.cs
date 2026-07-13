@@ -46,9 +46,4 @@ public class CompanyRepository : ICompanyRepository
             cancellationToken);
     }
 
-    public async Task SaveChangesAsync(
-        CancellationToken cancellationToken)
-    {
-        await _context.SaveChangesAsync(cancellationToken);
-    }
 }

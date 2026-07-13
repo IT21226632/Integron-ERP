@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using MediatR;
 using IntegronERP.Modules.Identity.Domain.Repositories;
 using IntegronERP.Modules.Identity.Infrastructure.Persistence.Repositories;
+using IntegronERP.SharedKernel.Interfaces;
+
 
 namespace IntegronERP.Modules.Identity;
 
@@ -16,12 +18,14 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        // Database
         services.AddDbContext<IdentityDbContext>(options =>
         {
             options.UseNpgsql(
                 configuration.GetConnectionString("DefaultConnection"));
         });
 
+        // ASP.NET Identity
         services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
         {
             options.Password.RequiredLength = 8;
@@ -40,7 +44,11 @@ public static class DependencyInjection
             cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
         });
 
+        // Repositories
         services.AddScoped<ICompanyRepository, CompanyRepository>();
+
+        // Unit of Work
+        services.AddScoped<IUnitOfWork, IdentityUnitOfWork>();
 
         return services;
     }

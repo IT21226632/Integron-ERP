@@ -1,6 +1,7 @@
 using IntegronERP.Modules.Identity.Application.Features.CompanyRegistration.DTOs;
 using IntegronERP.Modules.Identity.Domain.Entities;
 using IntegronERP.Modules.Identity.Domain.Repositories;
+using IntegronERP.SharedKernel.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -12,16 +13,19 @@ public class RegisterCompanyCommandHandler
     private readonly ICompanyRepository _companyRepository;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+    private readonly IUnitOfWork _unitOfWork;
 
 
     public RegisterCompanyCommandHandler(
         ICompanyRepository companyRepository,
         UserManager<ApplicationUser> userManager,
-        RoleManager<IdentityRole<Guid>> roleManager)
+        RoleManager<IdentityRole<Guid>> roleManager,
+        IUnitOfWork unitOfWork)
     {
         _companyRepository = companyRepository;
         _userManager = userManager;
         _roleManager = roleManager;
+        _unitOfWork = unitOfWork;
     }
 
 
@@ -56,12 +60,21 @@ public class RegisterCompanyCommandHandler
             Id = Guid.NewGuid(),
             Name = request.CompanyName,
             Email = request.CompanyEmail,
-            PhoneNumber = request.CompanyPhone
+            PhoneNumber = request.CompanyPhone,
+            IsActive = true,
+            CreatedAt = DateTime.UtcNow
         };
 
 
         await _companyRepository.AddAsync(
             company,
+            cancellationToken);
+
+
+        // Save company first
+        // because ApplicationUser has FK -> CompanyId
+
+        await _unitOfWork.CommitAsync(
             cancellationToken);
 
 
@@ -75,7 +88,9 @@ public class RegisterCompanyCommandHandler
             Email = request.Email,
             FirstName = request.FirstName,
             LastName = request.LastName,
-            CompanyId = company.Id
+            CompanyId = company.Id,
+            IsActive = true,
+            CreatedAt = DateTime.UtcNow
         };
 
 
@@ -97,12 +112,15 @@ public class RegisterCompanyCommandHandler
 
 
 
-        // 4. Create Owner role
+        // 4. Create Owner role if it does not exist
 
         const string ownerRole = "Owner";
 
 
-        if (!await _roleManager.RoleExistsAsync(ownerRole))
+        var roleExists = await _roleManager.RoleExistsAsync(ownerRole);
+
+
+        if (!roleExists)
         {
             await _roleManager.CreateAsync(
                 new IdentityRole<Guid>
@@ -115,7 +133,7 @@ public class RegisterCompanyCommandHandler
 
 
 
-        // 5. Assign role
+        // 5. Assign Owner role to user
 
         await _userManager.AddToRoleAsync(
             user,
@@ -123,9 +141,9 @@ public class RegisterCompanyCommandHandler
 
 
 
-        // 6. Save company
+        // 6. Commit remaining changes
 
-        await _companyRepository.SaveChangesAsync(
+        await _unitOfWork.CommitAsync(
             cancellationToken);
 
 

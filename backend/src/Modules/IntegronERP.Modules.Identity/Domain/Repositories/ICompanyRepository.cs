@@ -16,6 +16,4 @@ public interface ICompanyRepository
         Company company,
         CancellationToken cancellationToken);
 
-    Task SaveChangesAsync(
-        CancellationToken cancellationToken);
 }
