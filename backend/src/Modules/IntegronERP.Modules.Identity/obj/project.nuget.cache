@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "lz8DGSoXUnGmTocGcwoHi6D/PPLOKi33OjJfvorQbqMn8PxRNsnhVYVn6wzf/06Y4BfLeF4qc/ePpOQzqC7EPA==",
+  "dgSpecHash": "GwyPe6jU3dfZQxn8bdSnjdUqjsJT+ik+zNWRNeZ6kN7GNsHMyJ77mPNQhnImnPNEhgEwSVk/JPUMvHrIQbm4Ug==",
   "success": true,
   "projectFilePath": "D:\\Integron ERP\\Integron-ERP\\backend\\src\\Modules\\IntegronERP.Modules.Identity\\IntegronERP.Modules.Identity.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\HP\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.11.0\\fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\mediatr\\12.5.0\\mediatr.12.5.0.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",

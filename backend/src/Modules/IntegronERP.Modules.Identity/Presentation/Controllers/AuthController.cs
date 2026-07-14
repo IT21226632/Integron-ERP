@@ -31,4 +31,10 @@ public class AuthController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet("test-error")]
+        public IActionResult TestError()
+        {
+            throw new Exception("Testing global exception middleware.");
+        }
 }

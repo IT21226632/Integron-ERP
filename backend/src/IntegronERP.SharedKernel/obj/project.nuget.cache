@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "x/uMAWxW4d41GEgRuFJ5XgFXXWME98u2U0W3XNSKHFB2yyXN64wgPHPmUQnK+C1+wtYeFxPyZMULIZC38stETw==",
+  "dgSpecHash": "bMa2OLiC6WyVW2+Q+ifnM3pCuLhLqcfAmPjKsNsWI3VIrJ2WcSk16zjU1+Rm2W3I33m15DvM/+ZWWp4YPvac3g==",
   "success": true,
   "projectFilePath": "D:\\Integron ERP\\Integron-ERP\\backend\\src\\IntegronERP.SharedKernel\\IntegronERP.SharedKernel.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\HP\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\mediatr\\12.5.0\\mediatr.12.5.0.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

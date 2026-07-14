@@ -8,6 +8,8 @@ using MediatR;
 using IntegronERP.Modules.Identity.Domain.Repositories;
 using IntegronERP.Modules.Identity.Infrastructure.Persistence.Repositories;
 using IntegronERP.SharedKernel.Interfaces;
+using IntegronERP.SharedKernel.Behaviors;
+using FluentValidation;
 
 
 namespace IntegronERP.Modules.Identity;
@@ -42,7 +44,12 @@ public static class DependencyInjection
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+
+            cfg.AddOpenBehavior(
+                typeof(ValidationBehavior<,>));
         });
+
+        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
         // Repositories
         services.AddScoped<ICompanyRepository, CompanyRepository>();
