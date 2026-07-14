@@ -1,5 +1,7 @@
 using IntegronERP.Modules.Identity.Application.Features.CompanyRegistration.Commands;
 using IntegronERP.Modules.Identity.Application.Features.CompanyRegistration.DTOs;
+using IntegronERP.Modules.Identity.Application.Features.Authentication.Commands;
+using IntegronERP.Modules.Identity.Application.Features.Authentication.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +23,22 @@ public class AuthController : ControllerBase
         RegisterCompanyRequest request)
     {
         var command = new RegisterCompanyCommand(request);
+
+        var response = await _mediator.Send(command);
+
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPost("login")]
+    public async Task<ActionResult<LoginResponse>> Login(
+        LoginRequest request)
+    {
+        var command = new LoginCommand(request);
 
         var response = await _mediator.Send(command);
 

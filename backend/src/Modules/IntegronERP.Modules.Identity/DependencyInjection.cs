@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using IntegronERP.Modules.Identity.Application.Services;
 using MediatR;
 using IntegronERP.Modules.Identity.Domain.Repositories;
 using IntegronERP.Modules.Identity.Infrastructure.Persistence.Repositories;
 using IntegronERP.SharedKernel.Interfaces;
 using IntegronERP.SharedKernel.Behaviors;
 using FluentValidation;
+using IntegronERP.Modules.Identity.Infrastructure.Configuration;
 
 
 namespace IntegronERP.Modules.Identity;
@@ -26,6 +28,9 @@ public static class DependencyInjection
             options.UseNpgsql(
                 configuration.GetConnectionString("DefaultConnection"));
         });
+
+        services.Configure<JwtSettings>(
+            configuration.GetSection(JwtSettings.SectionName));
 
         // ASP.NET Identity
         services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
@@ -56,6 +61,8 @@ public static class DependencyInjection
 
         // Unit of Work
         services.AddScoped<IUnitOfWork, IdentityUnitOfWork>();
+
+        services.AddScoped<IJwtTokenService, JwtTokenService>();
 
         return services;
     }

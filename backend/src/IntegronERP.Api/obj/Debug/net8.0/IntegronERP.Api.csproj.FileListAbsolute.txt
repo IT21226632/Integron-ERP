@@ -125,3 +125,13 @@ D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.Api\obj\Debug\net8.0\refint
 D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.Api\obj\Debug\net8.0\IntegronERP.Api.pdb
 D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.Api\obj\Debug\net8.0\IntegronERP.Api.genruntimeconfig.cache
 D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.Api\obj\Debug\net8.0\ref\IntegronERP.Api.dll
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.Api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.Api\bin\Debug\net8.0\Microsoft.Bcl.Cryptography.dll
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.Api\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.Api\bin\Debug\net8.0\System.Formats.Asn1.dll
+D:\Integron ERP\Integron-ERP\backend\src\IntegronERP.Api\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
