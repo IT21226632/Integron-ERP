@@ -23,4 +23,6 @@ public class IdentityDbContext
         builder.ApplyConfigurationsFromAssembly(
             typeof(IdentityDbContext).Assembly);
     }
+
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 }

@@ -12,6 +12,7 @@ using IntegronERP.SharedKernel.Interfaces;
 using IntegronERP.SharedKernel.Behaviors;
 using FluentValidation;
 using IntegronERP.Modules.Identity.Infrastructure.Configuration;
+using Microsoft.AspNetCore.Http;
 
 
 namespace IntegronERP.Modules.Identity;
@@ -45,6 +46,15 @@ public static class DependencyInjection
         })
         .AddEntityFrameworkStores<IdentityDbContext>()
         .AddDefaultTokenProviders();
+
+        services.ConfigureApplicationCookie(options =>
+        {
+            options.Events.OnRedirectToLogin = context =>
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Task.CompletedTask;
+            };
+        });
 
         services.AddMediatR(cfg =>
         {

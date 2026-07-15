@@ -4,6 +4,9 @@ using IntegronERP.Modules.Identity.Application.Features.Authentication.Commands;
 using IntegronERP.Modules.Identity.Application.Features.Authentication.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace IntegronERP.Modules.Identity.Presentation.Controllers;
 
@@ -48,6 +51,27 @@ public class AuthController : ControllerBase
         }
 
         return Ok(response);
+    }
+
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpGet("me")]
+    public IActionResult Me()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var email = User.FindFirstValue(ClaimTypes.Email);
+
+        var role = User.FindFirstValue(ClaimTypes.Role);
+
+        var companyId = User.FindFirst("CompanyId")?.Value;
+
+        return Ok(new
+        {
+            UserId = userId,
+            Email = email,
+            CompanyId = companyId,
+            Role = role
+        });
     }
 
     [HttpGet("test-error")]
