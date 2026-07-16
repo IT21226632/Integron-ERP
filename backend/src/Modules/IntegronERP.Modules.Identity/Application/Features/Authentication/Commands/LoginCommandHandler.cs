@@ -3,6 +3,8 @@ using IntegronERP.Modules.Identity.Application.Services;
 using IntegronERP.Modules.Identity.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using IntegronERP.Modules.Identity.Domain.Repositories;
+using IntegronERP.SharedKernel.Interfaces;
 
 namespace IntegronERP.Modules.Identity.Application.Features.Authentication.Commands;
 
@@ -11,13 +13,20 @@ public class LoginCommandHandler
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IJwtTokenService _jwtTokenService;
+    private readonly IRefreshTokenRepository _refreshTokenRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
     public LoginCommandHandler(
         UserManager<ApplicationUser> userManager,
-        IJwtTokenService jwtTokenService)
+        IJwtTokenService jwtTokenService,
+        IRefreshTokenRepository refreshTokenRepository,
+        IUnitOfWork unitOfWork)
+
     {
         _userManager = userManager;
         _jwtTokenService = jwtTokenService;
+        _refreshTokenRepository = refreshTokenRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<LoginResponse> Handle(
@@ -71,6 +80,22 @@ public class LoginCommandHandler
             roles);
 
         var refreshToken = _jwtTokenService.GenerateRefreshToken();
+
+        var refreshTokenEntity = new RefreshToken
+        {
+            Id = Guid.NewGuid(),
+            Token = refreshToken,
+            UserId = user.Id,
+            CreatedAt = DateTime.UtcNow,
+            ExpiresAt = DateTime.UtcNow.AddDays(7),
+            Revoked = false
+        };
+
+        await _refreshTokenRepository.AddAsync(
+            refreshTokenEntity,
+            cancellationToken);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
 
         // 6. Return response
         return new LoginResponse

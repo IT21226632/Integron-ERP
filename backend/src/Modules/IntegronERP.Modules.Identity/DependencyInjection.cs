@@ -68,6 +68,7 @@ public static class DependencyInjection
 
         // Repositories
         services.AddScoped<ICompanyRepository, CompanyRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
         // Unit of Work
         services.AddScoped<IUnitOfWork, IdentityUnitOfWork>();
