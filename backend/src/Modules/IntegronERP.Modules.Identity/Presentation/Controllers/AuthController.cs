@@ -69,6 +69,22 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
+    [HttpPost("logout")]
+    public async Task<ActionResult<LogoutResponse>> Logout(
+        LogoutRequest request)
+    {
+        var command = new LogoutCommand(request);
+
+        var response = await _mediator.Send(command);
+
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
+
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpGet("me")]
     public IActionResult Me()
