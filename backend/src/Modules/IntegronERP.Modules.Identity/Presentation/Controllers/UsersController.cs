@@ -4,6 +4,7 @@ using IntegronERP.Modules.Identity.Application.Features.Users.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using IntegronERP.Modules.Identity.Application.Features.Users.Queries;
 
 namespace IntegronERP.Modules.Identity.Presentation.Controllers;
 
@@ -46,6 +47,28 @@ public class UsersController : ControllerBase
         {
             return BadRequest(response);
         }
+
+        return Ok(response);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<GetUsersResponse>> GetUsers()
+    {
+        var companyIdClaim = User.FindFirst("CompanyId")?.Value;
+
+        if (string.IsNullOrWhiteSpace(companyIdClaim))
+        {
+            return Unauthorized(new GetUsersResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
+
+        var companyId = Guid.Parse(companyIdClaim);
+
+        var response = await _mediator.Send(
+            new GetUsersQuery(companyId));
 
         return Ok(response);
     }

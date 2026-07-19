@@ -69,10 +69,10 @@ public static class DependencyInjection
         // Repositories
         services.AddScoped<ICompanyRepository, CompanyRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         // Unit of Work
         services.AddScoped<IUnitOfWork, IdentityUnitOfWork>();
-
         services.AddScoped<IJwtTokenService, JwtTokenService>();
 
         return services;

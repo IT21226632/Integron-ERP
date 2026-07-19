@@ -7,4 +7,9 @@ public interface IUserRepository
     Task<ApplicationUser?> GetByEmailAsync(
         string email,
         CancellationToken cancellationToken);
+
+
+    Task<List<ApplicationUser>> GetByCompanyAsync(
+        Guid companyId,
+        CancellationToken cancellationToken);
 }
