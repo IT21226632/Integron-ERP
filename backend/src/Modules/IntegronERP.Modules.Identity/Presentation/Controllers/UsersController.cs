@@ -1,10 +1,10 @@
-using System.Security.Claims;
 using IntegronERP.Modules.Identity.Application.Features.Users.Commands;
 using IntegronERP.Modules.Identity.Application.Features.Users.DTOs;
+using IntegronERP.Modules.Identity.Application.Features.Users.Queries;
+using IntegronERP.SharedKernel.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using IntegronERP.Modules.Identity.Application.Features.Users.Queries;
 
 namespace IntegronERP.Modules.Identity.Presentation.Controllers;
 
@@ -14,19 +14,21 @@ namespace IntegronERP.Modules.Identity.Presentation.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly ICurrentUserService _currentUser;
 
-    public UsersController(IMediator mediator)
+    public UsersController(
+        IMediator mediator,
+        ICurrentUserService currentUser)
     {
         _mediator = mediator;
+        _currentUser = currentUser;
     }
 
     [HttpPost]
     public async Task<ActionResult<CreateUserResponse>> CreateUser(
         CreateUserRequest request)
     {
-        var companyIdClaim = User.FindFirst("CompanyId")?.Value;
-
-        if (string.IsNullOrWhiteSpace(companyIdClaim))
+        if (!_currentUser.IsAuthenticated || _currentUser.CompanyId == Guid.Empty)
         {
             return Unauthorized(new CreateUserResponse
             {
@@ -35,11 +37,9 @@ public class UsersController : ControllerBase
             });
         }
 
-        var companyId = Guid.Parse(companyIdClaim);
-
         var command = new CreateUserCommand(
             request,
-            companyId);
+            _currentUser.CompanyId);
 
         var response = await _mediator.Send(command);
 
@@ -54,9 +54,7 @@ public class UsersController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<GetUsersResponse>> GetUsers()
     {
-        var companyIdClaim = User.FindFirst("CompanyId")?.Value;
-
-        if (string.IsNullOrWhiteSpace(companyIdClaim))
+        if (!_currentUser.IsAuthenticated || _currentUser.CompanyId == Guid.Empty)
         {
             return Unauthorized(new GetUsersResponse
             {
@@ -65,11 +63,40 @@ public class UsersController : ControllerBase
             });
         }
 
-        var companyId = Guid.Parse(companyIdClaim);
-
         var response = await _mediator.Send(
-            new GetUsersQuery(companyId));
+            new GetUsersQuery(_currentUser.CompanyId));
 
         return Ok(response);
     }
+
+
+    [HttpGet("{id:guid}")]
+public async Task<ActionResult<GetUserByIdResponse>> GetUserById(
+    Guid id)
+{
+    if (!_currentUser.IsAuthenticated || 
+        _currentUser.CompanyId == Guid.Empty)
+    {
+        return Unauthorized(new GetUserByIdResponse
+        {
+            Success = false,
+            Message = "Company information not found."
+        });
+    }
+
+
+    var response = await _mediator.Send(
+        new GetUserByIdQuery(
+            id,
+            _currentUser.CompanyId));
+
+
+    if (!response.Success)
+    {
+        return NotFound(response);
+    }
+
+
+    return Ok(response);
+}
 }

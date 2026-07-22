@@ -34,4 +34,14 @@ public class UserRepository : IUserRepository
             .ThenBy(x => x.LastName)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<ApplicationUser?> GetByIdAsync(
+    Guid id,
+    CancellationToken cancellationToken)
+{
+    return await _context.Users
+        .FirstOrDefaultAsync(
+            x => x.Id == id,
+            cancellationToken);
+}
 }
