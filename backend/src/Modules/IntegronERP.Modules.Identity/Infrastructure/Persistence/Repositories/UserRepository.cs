@@ -36,12 +36,21 @@ public class UserRepository : IUserRepository
     }
 
     public async Task<ApplicationUser?> GetByIdAsync(
-    Guid id,
-    CancellationToken cancellationToken)
-{
-    return await _context.Users
-        .FirstOrDefaultAsync(
-            x => x.Id == id,
-            cancellationToken);
-}
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        return await _context.Users
+            .FirstOrDefaultAsync(
+                x => x.Id == id,
+                cancellationToken);
+    }
+
+    public Task UpdateAsync(
+        ApplicationUser user,
+        CancellationToken cancellationToken)
+    {
+        _context.Users.Update(user);
+
+        return Task.CompletedTask;
+    }
 }

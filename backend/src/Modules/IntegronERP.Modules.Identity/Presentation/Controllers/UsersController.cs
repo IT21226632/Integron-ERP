@@ -71,18 +71,18 @@ public class UsersController : ControllerBase
 
 
     [HttpGet("{id:guid}")]
-public async Task<ActionResult<GetUserByIdResponse>> GetUserById(
-    Guid id)
-{
-    if (!_currentUser.IsAuthenticated || 
-        _currentUser.CompanyId == Guid.Empty)
+    public async Task<ActionResult<GetUserByIdResponse>> GetUserById(
+        Guid id)
     {
-        return Unauthorized(new GetUserByIdResponse
+        if (!_currentUser.IsAuthenticated || 
+            _currentUser.CompanyId == Guid.Empty)
         {
-            Success = false,
-            Message = "Company information not found."
-        });
-    }
+            return Unauthorized(new GetUserByIdResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
 
 
     var response = await _mediator.Send(
@@ -99,4 +99,33 @@ public async Task<ActionResult<GetUserByIdResponse>> GetUserById(
 
     return Ok(response);
 }
+
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<UpdateUserResponse>> UpdateUser(
+        Guid id,
+        UpdateUserRequest request)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(new UpdateUserResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
+
+        var response = await _mediator.Send(
+            new UpdateUserCommand(
+                id,
+                _currentUser.CompanyId,
+                request));
+
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
 }

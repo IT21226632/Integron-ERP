@@ -12,9 +12,15 @@ public interface IUserRepository
     Task<List<ApplicationUser>> GetByCompanyAsync(
         Guid companyId,
         CancellationToken cancellationToken);
-        
+
 
     Task<ApplicationUser?> GetByIdAsync(
         Guid id,
         CancellationToken cancellationToken);
+
+
+    Task UpdateAsync(
+        ApplicationUser user,
+        CancellationToken cancellationToken);
+
 }
