@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IntegronERP.SharedKernel")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+886d9f3c2858ec2d2e92c470993b24f030220a1f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8b5399ee6c575c7410665679319df55ed40824ce")]
 [assembly: System.Reflection.AssemblyProductAttribute("IntegronERP.SharedKernel")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IntegronERP.SharedKernel")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

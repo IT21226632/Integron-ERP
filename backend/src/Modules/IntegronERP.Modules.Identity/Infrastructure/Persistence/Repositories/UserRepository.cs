@@ -53,4 +53,23 @@ public class UserRepository : IUserRepository
 
         return Task.CompletedTask;
     }
+
+    public async Task<int> GetActiveOwnerCountAsync(
+        Guid companyId,
+        CancellationToken cancellationToken)
+    {
+        var owners = await (
+            from user in _context.Users
+            join userRole in _context.UserRoles
+                on user.Id equals userRole.UserId
+            join role in _context.Roles
+                on userRole.RoleId equals role.Id
+            where user.CompanyId == companyId
+                && user.IsActive
+                && role.Name == "Owner"
+            select user.Id
+        ).CountAsync(cancellationToken);
+
+        return owners;
+    }
 }

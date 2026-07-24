@@ -158,4 +158,35 @@ public class UsersController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPatch("{id:guid}/role")]
+    [Authorize(Roles = "Owner")]
+    public async Task<ActionResult<ChangeUserRoleResponse>> ChangeUserRole(
+        Guid id,
+        ChangeUserRoleRequest request)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(new ChangeUserRoleResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
+
+        var response = await _mediator.Send(
+            new ChangeUserRoleCommand(
+                id,
+                _currentUser.UserId,
+                _currentUser.CompanyId,
+                request));
+
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
 }

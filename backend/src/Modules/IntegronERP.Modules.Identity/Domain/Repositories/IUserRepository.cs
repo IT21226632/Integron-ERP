@@ -23,4 +23,9 @@ public interface IUserRepository
         ApplicationUser user,
         CancellationToken cancellationToken);
 
+
+    Task<int> GetActiveOwnerCountAsync(
+        Guid companyId,
+        CancellationToken cancellationToken);
+
 }
