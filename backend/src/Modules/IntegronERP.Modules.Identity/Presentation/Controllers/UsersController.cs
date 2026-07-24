@@ -128,4 +128,34 @@ public class UsersController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPatch("{id:guid}/status")]
+    public async Task<ActionResult<UpdateUserStatusResponse>> UpdateUserStatus(
+        Guid id,
+        UpdateUserStatusRequest request)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(new UpdateUserStatusResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
+
+        var response = await _mediator.Send(
+            new UpdateUserStatusCommand(
+                id,
+                _currentUser.CompanyId,
+                _currentUser.UserId,
+                request));
+
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
 }
