@@ -38,4 +38,13 @@ public class RefreshTokenRepository : IRefreshTokenRepository
         _context.RefreshTokens.Update(refreshToken);
         return Task.CompletedTask;
     }
+
+    public async Task<List<RefreshToken>> GetByUserIdAsync(
+    Guid userId,
+    CancellationToken cancellationToken)
+{
+    return await _context.RefreshTokens
+        .Where(x => x.UserId == userId)
+        .ToListAsync(cancellationToken);
+}
 }

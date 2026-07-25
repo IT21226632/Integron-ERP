@@ -15,4 +15,8 @@ public interface IRefreshTokenRepository
     Task UpdateAsync(
         RefreshToken refreshToken,
         CancellationToken cancellationToken = default);
+
+    Task<List<RefreshToken>> GetByUserIdAsync(
+        Guid userId,
+        CancellationToken cancellationToken);
 }

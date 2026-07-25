@@ -111,4 +111,36 @@ public class AuthController : ControllerBase
         {
             throw new Exception("Testing global exception middleware.");
         }
+
+    [HttpPost("change-password")]
+    [Authorize]
+    public async Task<ActionResult<ChangePasswordResponse>> ChangePassword(
+        ChangePasswordRequest request)
+    {
+        var userIdClaim = User.FindFirst(
+            ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrWhiteSpace(userIdClaim))
+        {
+            return Unauthorized(new ChangePasswordResponse
+            {
+                Success = false,
+                Message = "User information not found."
+            });
+        }
+
+        var userId = Guid.Parse(userIdClaim);
+
+        var response = await _mediator.Send(
+            new ChangePasswordCommand(
+                userId,
+                request));
+
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
 }
