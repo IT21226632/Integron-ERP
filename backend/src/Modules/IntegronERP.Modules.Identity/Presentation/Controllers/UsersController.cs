@@ -5,6 +5,7 @@ using IntegronERP.SharedKernel.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using IntegronERP.Modules.Identity.Infrastructure.Authorization;
 
 namespace IntegronERP.Modules.Identity.Presentation.Controllers;
 
@@ -25,6 +26,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = Policies.ManageUsers)]
     public async Task<ActionResult<CreateUserResponse>> CreateUser(
         CreateUserRequest request)
     {
@@ -160,7 +162,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPatch("{id:guid}/role")]
-    [Authorize(Roles = "Owner")]
+    [Authorize(Policy = Policies.ManageRoles)]
     public async Task<ActionResult<ChangeUserRoleResponse>> ChangeUserRole(
         Guid id,
         ChangeUserRoleRequest request)
@@ -177,6 +179,37 @@ public class UsersController : ControllerBase
 
         var response = await _mediator.Send(
             new ChangeUserRoleCommand(
+                id,
+                _currentUser.UserId,
+                _currentUser.CompanyId,
+                request));
+
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPost("{id:guid}/reset-password")]
+    [Authorize(Policy = Policies.ManageUsers)]
+    public async Task<ActionResult<ResetPasswordResponse>> ResetPassword(
+        Guid id,
+        ResetPasswordRequest request)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(new ResetPasswordResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
+
+        var response = await _mediator.Send(
+            new ResetPasswordCommand(
                 id,
                 _currentUser.UserId,
                 _currentUser.CompanyId,

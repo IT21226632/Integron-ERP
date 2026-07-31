@@ -3,6 +3,7 @@ using IntegronERP.Modules.Identity.Domain.Entities;
 using IntegronERP.Modules.Identity.Domain.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using IntegronERP.Modules.Identity.Domain.Constants;
 
 namespace IntegronERP.Modules.Identity.Application.Features.Users.Commands;
 
@@ -84,10 +85,10 @@ public class ChangeUserRoleCommandHandler
         var currentRoles = await _userManager.GetRolesAsync(user);
 
         var isOwner =
-            currentRoles.Contains("Owner");
+            currentRoles.Contains(Roles.Owner);
 
         if (isOwner &&
-            request.Role != "Owner")
+            request.Role != Roles.Owner)
         {
             var ownerCount =
                 await _userRepository.GetActiveOwnerCountAsync(

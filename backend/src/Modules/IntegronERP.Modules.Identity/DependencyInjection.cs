@@ -13,6 +13,7 @@ using IntegronERP.SharedKernel.Behaviors;
 using FluentValidation;
 using IntegronERP.Modules.Identity.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Http;
+using IntegronERP.Modules.Identity.Infrastructure.Extensions;
 
 
 namespace IntegronERP.Modules.Identity;
@@ -55,6 +56,8 @@ public static class DependencyInjection
                 return Task.CompletedTask;
             };
         });
+
+        services.AddIdentityAuthorization();
 
         services.AddMediatR(cfg =>
         {
