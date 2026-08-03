@@ -4,6 +4,7 @@ using IntegronERP.Modules.Identity.Domain.Repositories;
 using IntegronERP.SharedKernel.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using IntegronERP.Modules.Identity.Domain.Constants;
 
 namespace IntegronERP.Modules.Identity.Application.Features.CompanyRegistration.Commands;
 
@@ -12,19 +13,16 @@ public class RegisterCompanyCommandHandler
 {
     private readonly ICompanyRepository _companyRepository;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly RoleManager<IdentityRole<Guid>> _roleManager;
     private readonly IUnitOfWork _unitOfWork;
 
 
     public RegisterCompanyCommandHandler(
         ICompanyRepository companyRepository,
         UserManager<ApplicationUser> userManager,
-        RoleManager<IdentityRole<Guid>> roleManager,
         IUnitOfWork unitOfWork)
     {
         _companyRepository = companyRepository;
         _userManager = userManager;
-        _roleManager = roleManager;
         _unitOfWork = unitOfWork;
     }
 
@@ -110,34 +108,22 @@ public class RegisterCompanyCommandHandler
             };
         }
 
-
-
-        // 4. Create Owner role if it does not exist
-
-        const string ownerRole = "Owner";
-
-
-        var roleExists = await _roleManager.RoleExistsAsync(ownerRole);
-
-
-        if (!roleExists)
-        {
-            await _roleManager.CreateAsync(
-                new IdentityRole<Guid>
-                {
-                    Id = Guid.NewGuid(),
-                    Name = ownerRole,
-                    NormalizedName = ownerRole.ToUpper()
-                });
-        }
-
-
-
         // 5. Assign Owner role to user
 
-        await _userManager.AddToRoleAsync(
-            user,
-            ownerRole);
+        var roleResult = await _userManager.AddToRoleAsync(
+        user,
+        Roles.Owner);
+
+    if (!roleResult.Succeeded)
+    {
+        return new RegisterCompanyResponse
+        {
+            Success = false,
+            Message = string.Join(
+                ", ",
+                roleResult.Errors.Select(e => e.Description))
+        };
+    }
 
 
 
