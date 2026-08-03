@@ -46,4 +46,22 @@ public class CompanyRepository : ICompanyRepository
             cancellationToken);
     }
 
+    public async Task<Company?> GetByIdAsync(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        return await _context.Companies
+            .FirstOrDefaultAsync(
+                x => x.Id == id,
+                cancellationToken);
+    }
+
+    public Task UpdateAsync(
+        Company company,
+        CancellationToken cancellationToken)
+    {
+        _context.Companies.Update(company);
+
+        return Task.CompletedTask;
+    }
 }

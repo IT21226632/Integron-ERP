@@ -16,4 +16,11 @@ public interface ICompanyRepository
         Company company,
         CancellationToken cancellationToken);
 
+    Task<Company?> GetByIdAsync(
+        Guid id,
+        CancellationToken cancellationToken);
+
+    Task UpdateAsync(
+        Company company,
+        CancellationToken cancellationToken);
 }
