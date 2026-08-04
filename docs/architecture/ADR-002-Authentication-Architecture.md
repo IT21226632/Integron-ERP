@@ -72,6 +72,8 @@ Identity will manage:
 
 The authentication implementation should remain independent from business modules.
 
+JWT access tokens and refresh tokens are used for stateless authentication.
+
 ---
 
 # Authorization Strategy
@@ -83,6 +85,8 @@ Users receive one or more roles.
 Roles contain one or more permissions.
 
 Permissions determine access to specific business capabilities.
+
+current implementation uses role-based authorization, with the architecture intentionally designed to evolve toward permission-based authorization in a future iteration.
 
 Example:
 
