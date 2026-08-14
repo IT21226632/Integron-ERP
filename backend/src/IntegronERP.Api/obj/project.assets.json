@@ -1279,6 +1279,27 @@
           "Microsoft.AspNetCore.App"
         ]
       },
+      "IntegronERP.Modules.Inventory/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "FluentValidation": "11.11.0",
+          "FluentValidation.DependencyInjectionExtensions": "11.11.0",
+          "IntegronERP.SharedKernel": "1.0.0",
+          "MediatR": "12.5.0",
+          "Microsoft.EntityFrameworkCore": "8.0.10",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "8.0.10"
+        },
+        "compile": {
+          "bin/placeholder/IntegronERP.Modules.Inventory.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/IntegronERP.Modules.Inventory.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "IntegronERP.SharedKernel/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
@@ -3377,6 +3398,11 @@
       "path": "../Modules/IntegronERP.Modules.Identity/IntegronERP.Modules.Identity.csproj",
       "msbuildProject": "../Modules/IntegronERP.Modules.Identity/IntegronERP.Modules.Identity.csproj"
     },
+    "IntegronERP.Modules.Inventory/1.0.0": {
+      "type": "project",
+      "path": "../Modules/IntegronERP.Modules.Inventory/IntegronERP.Modules.Inventory.csproj",
+      "msbuildProject": "../Modules/IntegronERP.Modules.Inventory/IntegronERP.Modules.Inventory.csproj"
+    },
     "IntegronERP.SharedKernel/1.0.0": {
       "type": "project",
       "path": "../IntegronERP.SharedKernel/IntegronERP.SharedKernel.csproj",
@@ -3387,6 +3413,7 @@
     "net8.0": [
       "FluentValidation.AspNetCore >= 11.3.1",
       "IntegronERP.Modules.Identity >= 1.0.0",
+      "IntegronERP.Modules.Inventory >= 1.0.0",
       "IntegronERP.SharedKernel >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.20",
       "Microsoft.AspNetCore.OpenApi >= 8.0.2",
@@ -3424,6 +3451,9 @@
             },
             "D:\\Integron ERP\\Integron-ERP\\backend\\src\\Modules\\IntegronERP.Modules.Identity\\IntegronERP.Modules.Identity.csproj": {
               "projectPath": "D:\\Integron ERP\\Integron-ERP\\backend\\src\\Modules\\IntegronERP.Modules.Identity\\IntegronERP.Modules.Identity.csproj"
+            },
+            "D:\\Integron ERP\\Integron-ERP\\backend\\src\\Modules\\IntegronERP.Modules.Inventory\\IntegronERP.Modules.Inventory.csproj": {
+              "projectPath": "D:\\Integron ERP\\Integron-ERP\\backend\\src\\Modules\\IntegronERP.Modules.Inventory\\IntegronERP.Modules.Inventory.csproj"
             }
           }
         }

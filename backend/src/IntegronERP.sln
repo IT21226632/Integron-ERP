@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{E755
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegronERP.Modules.Identity", "Modules\IntegronERP.Modules.Identity\IntegronERP.Modules.Identity.csproj", "{B28DA375-23FB-4E50-AEF8-AAA11FF419D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegronERP.Modules.Inventory", "Modules\IntegronERP.Modules.Inventory\IntegronERP.Modules.Inventory.csproj", "{EEFB2B5E-1E1B-4F22-9A5A-782C48C30489}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,8 +34,13 @@ Global
 		{B28DA375-23FB-4E50-AEF8-AAA11FF419D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B28DA375-23FB-4E50-AEF8-AAA11FF419D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B28DA375-23FB-4E50-AEF8-AAA11FF419D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEFB2B5E-1E1B-4F22-9A5A-782C48C30489}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEFB2B5E-1E1B-4F22-9A5A-782C48C30489}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEFB2B5E-1E1B-4F22-9A5A-782C48C30489}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEFB2B5E-1E1B-4F22-9A5A-782C48C30489}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B28DA375-23FB-4E50-AEF8-AAA11FF419D5} = {E7557A78-1354-447B-9E5A-1EA7C57EA6AE}
+		{EEFB2B5E-1E1B-4F22-9A5A-782C48C30489} = {E7557A78-1354-447B-9E5A-1EA7C57EA6AE}
 	EndGlobalSection
 EndGlobal

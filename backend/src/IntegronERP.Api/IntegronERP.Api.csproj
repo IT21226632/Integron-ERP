@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Modules\IntegronERP.Modules.Identity\IntegronERP.Modules.Identity.csproj" />
     <ProjectReference Include="..\IntegronERP.SharedKernel\IntegronERP.SharedKernel.csproj" />
+    <ProjectReference Include="..\Modules\IntegronERP.Modules.Inventory\IntegronERP.Modules.Inventory.csproj" />
   </ItemGroup>
 
 </Project>

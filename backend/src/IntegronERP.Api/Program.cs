@@ -11,11 +11,13 @@ using Microsoft.AspNetCore.Identity;
 using IntegronERP.Modules.Identity.Infrastructure.Seed;
 using IntegronERP.Api.Services;
 using IntegronERP.SharedKernel.Interfaces;
+using IntegronERP.Modules.Inventory;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Register Modules
 builder.Services.AddIdentityModule(builder.Configuration);
+builder.Services.AddInventoryModule(builder.Configuration);
 
 builder.Services.AddAuthentication(options =>
     {
