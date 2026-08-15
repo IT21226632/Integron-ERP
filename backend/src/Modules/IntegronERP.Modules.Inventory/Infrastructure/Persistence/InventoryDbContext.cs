@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using IntegronERP.Modules.Inventory.Domain.Entities;
 
 namespace IntegronERP.Modules.Inventory.Infrastructure.Persistence;
 
@@ -9,6 +10,8 @@ public class InventoryDbContext : DbContext
         : base(options)
     {
     }
+
+    public DbSet<Category> Categories => Set<Category>();
 
     protected override void OnModelCreating(
         ModelBuilder modelBuilder)

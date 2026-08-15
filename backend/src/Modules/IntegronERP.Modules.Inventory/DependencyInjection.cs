@@ -3,6 +3,8 @@ using IntegronERP.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using IntegronERP.Modules.Inventory.Domain.Repositories;
+using IntegronERP.Modules.Inventory.Infrastructure.Persistence.Repositories;
 
 namespace IntegronERP.Modules.Inventory;
 
@@ -20,6 +22,8 @@ public static class DependencyInjection
         });
 
         services.AddScoped<IUnitOfWork, InventoryUnitOfWork>();
+
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
 
         return services;
     }
