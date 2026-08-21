@@ -12,6 +12,7 @@ using IntegronERP.Modules.Identity.Infrastructure.Seed;
 using IntegronERP.Api.Services;
 using IntegronERP.SharedKernel.Interfaces;
 using IntegronERP.Modules.Inventory;
+using IntegronERP.Modules.Inventory.Presentation.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,7 +55,8 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 // Add services
 builder.Services.AddControllers()
-    .AddApplicationPart(typeof(AuthController).Assembly);
+    .AddApplicationPart(typeof(AuthController).Assembly)
+    .AddApplicationPart(typeof(CategoriesController).Assembly);
 
 builder.Services.AddEndpointsApiExplorer();
 
