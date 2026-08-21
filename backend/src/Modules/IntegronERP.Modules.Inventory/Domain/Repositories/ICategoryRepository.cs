@@ -12,4 +12,18 @@ public interface ICategoryRepository
         Guid companyId,
         string name,
         CancellationToken cancellationToken = default);
+
+    Task<List<Category>> GetByCompanyIdAsync(
+        Guid companyId,
+        bool activeOnly = false,
+        CancellationToken cancellationToken = default);
+
+    Task<Category?> GetByIdAsync(
+        Guid id,
+        Guid companyId,
+        CancellationToken cancellationToken = default);
+
+    Task UpdateAsync(
+        Category category,
+        CancellationToken cancellationToken = default);
 }
