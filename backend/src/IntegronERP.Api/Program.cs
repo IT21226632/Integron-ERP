@@ -56,7 +56,8 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 // Add services
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(AuthController).Assembly)
-    .AddApplicationPart(typeof(CategoriesController).Assembly);
+    .AddApplicationPart(typeof(CategoriesController).Assembly)
+    .AddApplicationPart(typeof(ProductsController).Assembly);
 
 builder.Services.AddEndpointsApiExplorer();
 

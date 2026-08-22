@@ -73,4 +73,17 @@ public class CategoryRepository : ICategoryRepository
 
         return Task.CompletedTask;
     }
+
+    public async Task<Category?> GetActiveByIdAsync(
+        Guid categoryId,
+        Guid companyId,
+        CancellationToken cancellationToken)
+    {
+        return await _context.Categories
+            .FirstOrDefaultAsync(
+                x => x.Id == categoryId &&
+                    x.CompanyId == companyId &&
+                    x.IsActive,
+                cancellationToken);
+    }
 }

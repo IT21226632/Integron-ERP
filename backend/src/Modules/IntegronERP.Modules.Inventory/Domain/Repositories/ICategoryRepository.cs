@@ -26,4 +26,9 @@ public interface ICategoryRepository
     Task UpdateAsync(
         Category category,
         CancellationToken cancellationToken = default);
+
+    Task<Category?> GetActiveByIdAsync(
+        Guid categoryId,
+        Guid companyId,
+        CancellationToken cancellationToken);
 }
