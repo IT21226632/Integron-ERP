@@ -72,4 +72,65 @@ public class ProductsController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<GetProductByIdResponse>> GetProductById(
+        Guid id)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(new GetProductByIdResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
+
+        var response = await _mediator.Send(
+            new GetProductByIdQuery(
+                id,
+                _currentUser.CompanyId));
+
+        if (!response.Success)
+        {
+            return NotFound(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<UpdateProductResponse>> UpdateProduct(
+        Guid id,
+        UpdateProductRequest request)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(new UpdateProductResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
+
+        var response = await _mediator.Send(
+            new UpdateProductCommand(
+                id,
+                _currentUser.CompanyId,
+                request));
+
+        if (!response.Success)
+        {
+            if (response.Message == "Product not found.")
+            {
+                return NotFound(response);
+            }
+
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
 }

@@ -86,4 +86,19 @@ public class ProductRepository : IProductRepository
 
         return Task.CompletedTask;
     }
+
+    public async Task<bool> ExistsBySkuAsync(
+        Guid companyId,
+        string sku,
+        Guid excludeProductId,
+        CancellationToken cancellationToken)
+    {
+        return await _context.Products
+            .AnyAsync(
+                x =>
+                    x.CompanyId == companyId &&
+                    x.SKU == sku &&
+                    x.Id != excludeProductId,
+                cancellationToken);
+    }
 }

@@ -31,4 +31,10 @@ public interface IProductRepository
     Task UpdateAsync(
         Product product,
         CancellationToken cancellationToken);
+
+    Task<bool> ExistsBySkuAsync(
+        Guid companyId,
+        string sku,
+        Guid excludeProductId,
+        CancellationToken cancellationToken);
 }
