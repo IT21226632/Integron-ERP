@@ -39,13 +39,18 @@ public class GetStockMovementsQueryHandler
             };
         }
 
-        var movements =
+        var result =
             await _stockMovementRepository.GetByProductIdAsync(
                 query.ProductId,
                 query.CompanyId,
+                query.Page,
+                query.PageSize,
+                query.MovementType,
+                query.FromDate,
+                query.ToDate,
                 cancellationToken);
 
-        var movementDtos = movements
+        var movementDtos = result.Items
             .Select(x => new StockMovementDto
             {
                 Id = x.Id,
@@ -64,7 +69,10 @@ public class GetStockMovementsQueryHandler
         {
             Success = true,
             Message = "Stock movements retrieved successfully.",
-            Movements = movementDtos
+            Movements = movementDtos,
+            Page = query.Page,
+            PageSize = query.PageSize,
+            TotalCount = result.TotalCount
         };
     }
 }

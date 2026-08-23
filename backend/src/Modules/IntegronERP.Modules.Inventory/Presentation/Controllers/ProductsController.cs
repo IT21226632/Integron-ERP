@@ -8,6 +8,7 @@ using IntegronERP.Modules.Inventory.Application.Features.Products.Queries;
 using IntegronERP.Modules.Inventory.Application.Features.Stock.Commands;
 using IntegronERP.Modules.Inventory.Application.Features.Stock.DTOs;
 using IntegronERP.Modules.Inventory.Application.Features.Stock.Queries;
+using IntegronERP.Modules.Inventory.Domain.Constants;
 
 namespace IntegronERP.Modules.Inventory.Presentation.Controllers;
 
@@ -204,8 +205,15 @@ public class ProductsController : ControllerBase
 
     [HttpGet("{id:guid}/stock/movements")]
     public async Task<ActionResult<GetStockMovementsResponse>>
-        GetStockMovements(Guid id)
+        GetStockMovements(
+            Guid id,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 20,
+            [FromQuery] StockMovementType? movementType = null,
+            [FromQuery] DateTime? fromDate = null,
+            [FromQuery] DateTime? toDate = null)
     {
+        // Authentication / company validation
         if (!_currentUser.IsAuthenticated ||
             _currentUser.CompanyId == Guid.Empty)
         {
@@ -216,10 +224,48 @@ public class ProductsController : ControllerBase
             });
         }
 
-        var response = await _mediator.Send(
-            new GetStockMovementsQuery(
-                id,
-                _currentUser.CompanyId));
+        // Page validation
+        if (page < 1)
+        {
+            return BadRequest(new GetStockMovementsResponse
+            {
+                Success = false,
+                Message = "Page must be greater than or equal to 1."
+            });
+        }
+
+        // Page size validation
+        if (pageSize < 1 || pageSize > 100)
+        {
+            return BadRequest(new GetStockMovementsResponse
+            {
+                Success = false,
+                Message = "Page size must be between 1 and 100."
+            });
+        }
+
+        // Date validation
+        if (fromDate.HasValue &&
+            toDate.HasValue &&
+            fromDate.Value > toDate.Value)
+        {
+            return BadRequest(new GetStockMovementsResponse
+            {
+                Success = false,
+                Message = "From date cannot be later than to date."
+            });
+        }
+
+        var query = new GetStockMovementsQuery(
+            id,
+            _currentUser.CompanyId,
+            page,
+            pageSize,
+            movementType,
+            fromDate,
+            toDate);
+
+        var response = await _mediator.Send(query);
 
         if (!response.Success &&
             response.Message == "Product not found.")
