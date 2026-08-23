@@ -103,6 +103,83 @@ namespace IntegronERP.Modules.Inventory.Infrastructure.Persistence.Migrations
                     b.ToTable("Products", (string)null);
                 });
 
+            modelBuilder.Entity("IntegronERP.Modules.Inventory.Domain.Entities.ProductStock", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("numeric(18,3)");
+
+                    b.Property<decimal>("ReservedQuantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("numeric(18,3)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.HasIndex("CompanyId", "ProductId")
+                        .IsUnique();
+
+                    b.ToTable("ProductStocks", (string)null);
+                });
+
+            modelBuilder.Entity("IntegronERP.Modules.Inventory.Domain.Entities.StockMovement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("MovementType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("QuantityAfter")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("QuantityBefore")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Reference")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("StockMovements");
+                });
+
             modelBuilder.Entity("IntegronERP.Modules.Inventory.Domain.Entities.Product", b =>
                 {
                     b.HasOne("IntegronERP.Modules.Inventory.Domain.Entities.Category", "Category")
@@ -112,6 +189,35 @@ namespace IntegronERP.Modules.Inventory.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("IntegronERP.Modules.Inventory.Domain.Entities.ProductStock", b =>
+                {
+                    b.HasOne("IntegronERP.Modules.Inventory.Domain.Entities.Product", "Product")
+                        .WithOne("Stock")
+                        .HasForeignKey("IntegronERP.Modules.Inventory.Domain.Entities.ProductStock", "ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("IntegronERP.Modules.Inventory.Domain.Entities.StockMovement", b =>
+                {
+                    b.HasOne("IntegronERP.Modules.Inventory.Domain.Entities.Product", "Product")
+                        .WithMany("StockMovements")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("IntegronERP.Modules.Inventory.Domain.Entities.Product", b =>
+                {
+                    b.Navigation("Stock");
+
+                    b.Navigation("StockMovements");
                 });
 #pragma warning restore 612, 618
         }

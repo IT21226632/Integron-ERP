@@ -5,6 +5,9 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IntegronERP.Modules.Inventory.Application.Features.Products.Queries;
+using IntegronERP.Modules.Inventory.Application.Features.Stock.Commands;
+using IntegronERP.Modules.Inventory.Application.Features.Stock.DTOs;
+using IntegronERP.Modules.Inventory.Application.Features.Stock.Queries;
 
 namespace IntegronERP.Modules.Inventory.Presentation.Controllers;
 
@@ -157,6 +160,69 @@ public class ProductsController : ControllerBase
                 request));
 
         if (!response.Success)
+        {
+            return NotFound(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPatch("{id:guid}/stock")]
+    public async Task<ActionResult<StockAdjustmentResponse>>
+        AdjustStock(
+            Guid id,
+            StockAdjustmentRequest request)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(new StockAdjustmentResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
+
+        var response = await _mediator.Send(
+            new StockAdjustmentCommand(
+                id,
+                _currentUser.CompanyId,
+                request));
+
+        if (!response.Success)
+        {
+            if (response.Message == "Product not found.")
+            {
+                return NotFound(response);
+            }
+
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpGet("{id:guid}/stock/movements")]
+    public async Task<ActionResult<GetStockMovementsResponse>>
+        GetStockMovements(Guid id)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(new GetStockMovementsResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
+
+        var response = await _mediator.Send(
+            new GetStockMovementsQuery(
+                id,
+                _currentUser.CompanyId));
+
+        if (!response.Success &&
+            response.Message == "Product not found.")
         {
             return NotFound(response);
         }

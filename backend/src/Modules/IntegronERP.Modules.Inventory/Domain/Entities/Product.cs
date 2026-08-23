@@ -22,4 +22,9 @@ public class Product
 
     // Navigation property
     public Category Category { get; set; } = null!;
+
+    public ProductStock? Stock { get; set; }
+
+    public ICollection<StockMovement> StockMovements { get; set; }
+        = new List<StockMovement>();
 }
