@@ -257,4 +257,74 @@ public class ProductsController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPost("{id:guid}/stock/reserve")]
+    public async Task<ActionResult<ReserveStockResponse>>
+        ReserveStock(
+            Guid id,
+            ReserveStockRequest request)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(new ReserveStockResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
+
+        var response = await _mediator.Send(
+            new ReserveStockCommand(
+                id,
+                _currentUser.CompanyId,
+                request));
+
+        if (!response.Success)
+        {
+            if (response.Message == "Product not found.")
+            {
+                return NotFound(response);
+            }
+
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPost("{id:guid}/stock/release")]
+    public async Task<ActionResult<ReleaseStockReservationResponse>>
+        ReleaseStockReservation(
+            Guid id,
+            ReleaseStockReservationRequest request)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(new ReleaseStockReservationResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
+
+        var response = await _mediator.Send(
+            new ReleaseStockReservationCommand(
+                id,
+                _currentUser.CompanyId,
+                request));
+
+        if (!response.Success)
+        {
+            if (response.Message == "Product not found.")
+            {
+                return NotFound(response);
+            }
+
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
 }
