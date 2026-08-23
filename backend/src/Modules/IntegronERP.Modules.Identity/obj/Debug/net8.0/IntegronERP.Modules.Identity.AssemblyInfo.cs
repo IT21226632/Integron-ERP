@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IntegronERP.Modules.Identity")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+27aef784585b66fb252344a24de819d12c024b1b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9230336be82eb081b78eb1dfeb5d4667316f9d18")]
 [assembly: System.Reflection.AssemblyProductAttribute("IntegronERP.Modules.Identity")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IntegronERP.Modules.Identity")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

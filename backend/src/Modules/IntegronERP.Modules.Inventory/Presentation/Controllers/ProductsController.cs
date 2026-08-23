@@ -229,4 +229,32 @@ public class ProductsController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet("{id:guid}/stock")]
+    public async Task<ActionResult<GetProductStockResponse>>
+        GetProductStock(Guid id)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(new GetProductStockResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
+
+        var response = await _mediator.Send(
+            new GetProductStockQuery(
+                id,
+                _currentUser.CompanyId));
+
+        if (!response.Success &&
+            response.Message == "Product not found.")
+        {
+            return NotFound(response);
+        }
+
+        return Ok(response);
+    }
 }
