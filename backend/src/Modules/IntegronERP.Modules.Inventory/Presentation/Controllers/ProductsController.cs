@@ -133,4 +133,34 @@ public class ProductsController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPatch("{id:guid}/status")]
+    public async Task<ActionResult<UpdateProductStatusResponse>>
+        UpdateProductStatus(
+            Guid id,
+            UpdateProductStatusRequest request)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(new UpdateProductStatusResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
+
+        var response = await _mediator.Send(
+            new UpdateProductStatusCommand(
+                id,
+                _currentUser.CompanyId,
+                request));
+
+        if (!response.Success)
+        {
+            return NotFound(response);
+        }
+
+        return Ok(response);
+    }
 }
