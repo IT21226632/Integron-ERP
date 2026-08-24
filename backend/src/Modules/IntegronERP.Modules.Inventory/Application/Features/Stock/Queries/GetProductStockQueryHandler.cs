@@ -62,8 +62,8 @@ public class GetProductStockQueryHandler
             };
         }
 
-        var availableQuantity =
-            stock.Quantity - stock.ReservedQuantity;
+        // var availableQuantity =
+        //     stock.Quantity - stock.ReservedQuantity;
 
         return new GetProductStockResponse
         {
@@ -74,7 +74,7 @@ public class GetProductStockQueryHandler
                 ProductId = stock.ProductId,
                 Quantity = stock.Quantity,
                 ReservedQuantity = stock.ReservedQuantity,
-                AvailableQuantity = availableQuantity,
+                AvailableQuantity = stock.AvailableQuantity,
                 UpdatedAt = stock.UpdatedAt
             }
         };
