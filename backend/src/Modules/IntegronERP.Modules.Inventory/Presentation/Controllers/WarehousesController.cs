@@ -75,4 +75,97 @@ public class WarehousesController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<GetWarehouseByIdResponse>>
+        GetWarehouseById(Guid id)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(new GetWarehouseByIdResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
+
+        var response = await _mediator.Send(
+            new GetWarehouseByIdQuery(
+                id,
+                _currentUser.CompanyId));
+
+        if (!response.Success)
+        {
+            return NotFound(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<UpdateWarehouseResponse>>
+        UpdateWarehouse(
+            Guid id,
+            UpdateWarehouseRequest request)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(new UpdateWarehouseResponse
+            {
+                Success = false,
+                Message = "Company information not found."
+            });
+        }
+
+        var response = await _mediator.Send(
+            new UpdateWarehouseCommand(
+                id,
+                _currentUser.CompanyId,
+                request));
+
+        if (!response.Success)
+        {
+            if (response.Message == "Warehouse not found.")
+            {
+                return NotFound(response);
+            }
+
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPatch("{id:guid}/status")]
+    public async Task<ActionResult<UpdateWarehouseStatusResponse>>
+        UpdateWarehouseStatus(
+            Guid id,
+            UpdateWarehouseStatusRequest request)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(
+                new UpdateWarehouseStatusResponse
+                {
+                    Success = false,
+                    Message = "Company information not found."
+                });
+        }
+
+        var response = await _mediator.Send(
+            new UpdateWarehouseStatusCommand(
+                id,
+                _currentUser.CompanyId,
+                request));
+
+        if (!response.Success)
+        {
+            return NotFound(response);
+        }
+
+        return Ok(response);
+    }
 }
