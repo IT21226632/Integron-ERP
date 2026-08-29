@@ -25,6 +25,9 @@ public class Product
 
     public ProductStock? Stock { get; set; }
 
+    public ICollection<WarehouseStock> WarehouseStocks { get; set; }
+        = new List<WarehouseStock>();
+
     public ICollection<StockMovement> StockMovements { get; set; }
         = new List<StockMovement>();
 }

@@ -11,13 +11,16 @@ public class GetProductStockQueryHandler
 {
     private readonly IProductRepository _productRepository;
     private readonly IProductStockRepository _productStockRepository;
+    private readonly IWarehouseStockRepository _warehouseStockRepository;
 
     public GetProductStockQueryHandler(
         IProductRepository productRepository,
-        IProductStockRepository productStockRepository)
+        IProductStockRepository productStockRepository,
+        IWarehouseStockRepository warehouseStockRepository)
     {
         _productRepository = productRepository;
         _productStockRepository = productStockRepository;
+        _warehouseStockRepository = warehouseStockRepository;
     }
 
     public async Task<GetProductStockResponse> Handle(
@@ -55,6 +58,8 @@ public class GetProductStockQueryHandler
                 {
                     ProductId = product.Id,
                     Quantity = 0,
+                    AllocatedQuantity = 0,
+                    UnallocatedQuantity = 0,
                     ReservedQuantity = 0,
                     AvailableQuantity = 0,
                     UpdatedAt = DateTime.UtcNow
@@ -62,8 +67,31 @@ public class GetProductStockQueryHandler
             };
         }
 
-        // var availableQuantity =
-        //     stock.Quantity - stock.ReservedQuantity;
+        // Get stock allocated to all warehouses
+        var warehouseStocks =
+            await _warehouseStockRepository.GetByProductIdAsync(
+                query.ProductId,
+                query.CompanyId,
+                cancellationToken);
+
+        // Total stock currently allocated to warehouses
+        var allocatedQuantity =
+            warehouseStocks.Sum(x => x.Quantity);
+
+        // Stock that has not yet been allocated to a warehouse
+        var unallocatedQuantity =
+            Math.Max(
+                0,
+                stock.Quantity - allocatedQuantity);
+
+        // Stock available after considering both
+        // warehouse allocation and reservations
+        var availableQuantity =
+            Math.Max(
+                0,
+                stock.Quantity -
+                allocatedQuantity -
+                stock.ReservedQuantity);
 
         return new GetProductStockResponse
         {
@@ -73,8 +101,10 @@ public class GetProductStockQueryHandler
             {
                 ProductId = stock.ProductId,
                 Quantity = stock.Quantity,
+                AllocatedQuantity = allocatedQuantity,
+                UnallocatedQuantity = unallocatedQuantity,
                 ReservedQuantity = stock.ReservedQuantity,
-                AvailableQuantity = stock.AvailableQuantity,
+                AvailableQuantity = availableQuantity,
                 UpdatedAt = stock.UpdatedAt
             }
         };

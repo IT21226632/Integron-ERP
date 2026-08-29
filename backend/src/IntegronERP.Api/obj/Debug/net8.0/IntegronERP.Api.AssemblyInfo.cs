@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IntegronERP.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e34088675b3b4067d7495381f5e49abcfdaff99a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+158c1915effa5b06d21df86b4c43ddc87522feae")]
 [assembly: System.Reflection.AssemblyProductAttribute("IntegronERP.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IntegronERP.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

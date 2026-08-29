@@ -9,6 +9,8 @@ using IntegronERP.Modules.Inventory.Application.Features.Stock.Commands;
 using IntegronERP.Modules.Inventory.Application.Features.Stock.DTOs;
 using IntegronERP.Modules.Inventory.Application.Features.Stock.Queries;
 using IntegronERP.Modules.Inventory.Domain.Constants;
+using IntegronERP.Modules.Inventory.Application.Features.Warehouses.Commands;
+using IntegronERP.Modules.Inventory.Application.Features.Warehouses.DTOs;
 
 namespace IntegronERP.Modules.Inventory.Presentation.Controllers;
 
@@ -364,6 +366,47 @@ public class ProductsController : ControllerBase
         if (!response.Success)
         {
             if (response.Message == "Product not found.")
+            {
+                return NotFound(response);
+            }
+
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPost("{id:guid}/warehouse-stock")]
+    public async Task<ActionResult<AllocateWarehouseStockResponse>>
+        AllocateWarehouseStock(
+            Guid id,
+            AllocateWarehouseStockRequest request)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(
+                new AllocateWarehouseStockResponse
+                {
+                    Success = false,
+                    Message = "Company information not found."
+                });
+        }
+
+        var response = await _mediator.Send(
+            new AllocateWarehouseStockCommand(
+                id,
+                _currentUser.CompanyId,
+                request));
+
+        if (!response.Success)
+        {
+            if (response.Message == "Product not found.")
+            {
+                return NotFound(response);
+            }
+
+            if (response.Message == "Warehouse not found.")
             {
                 return NotFound(response);
             }

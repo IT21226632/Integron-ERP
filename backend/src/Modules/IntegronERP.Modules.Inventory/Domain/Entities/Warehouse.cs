@@ -17,4 +17,7 @@ public class Warehouse
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }
+
+    public ICollection<WarehouseStock> Stocks { get; set; }
+        = new List<WarehouseStock>();
 }

@@ -6,6 +6,10 @@ public class ProductStockDto
 
     public decimal Quantity { get; set; }
 
+    public decimal AllocatedQuantity { get; set; }
+
+    public decimal UnallocatedQuantity { get; set; }
+
     public decimal ReservedQuantity { get; set; }
 
     public decimal AvailableQuantity { get; set; }
