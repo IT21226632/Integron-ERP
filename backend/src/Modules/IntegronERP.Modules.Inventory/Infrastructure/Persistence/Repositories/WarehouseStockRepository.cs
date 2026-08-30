@@ -61,4 +61,19 @@ public class WarehouseStockRepository
 
         return Task.CompletedTask;
     }
+
+    public async Task<IReadOnlyList<WarehouseStock>> GetByWarehouseIdAsync(
+        Guid warehouseId,
+        Guid companyId,
+        CancellationToken cancellationToken)
+    {
+        return await _context.WarehouseStocks
+            .Where(
+                x =>
+                    x.WarehouseId == warehouseId &&
+                    x.CompanyId == companyId)
+            .Include(x => x.Product)
+            .OrderBy(x => x.Product.Name)
+            .ToListAsync(cancellationToken);
+    }
 }

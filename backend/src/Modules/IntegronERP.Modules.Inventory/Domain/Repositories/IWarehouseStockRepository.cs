@@ -22,4 +22,9 @@ public interface IWarehouseStockRepository
     Task UpdateAsync(
         WarehouseStock warehouseStock,
         CancellationToken cancellationToken);
+
+    Task<IReadOnlyList<WarehouseStock>> GetByWarehouseIdAsync(
+        Guid warehouseId,
+        Guid companyId,
+        CancellationToken cancellationToken);
 }

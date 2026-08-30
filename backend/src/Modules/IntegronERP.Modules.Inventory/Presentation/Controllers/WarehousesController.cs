@@ -168,4 +168,71 @@ public class WarehousesController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet("{id:guid}/stock")]
+    public async Task<ActionResult<GetWarehouseStockResponse>>
+        GetWarehouseStock(Guid id)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(
+                new GetWarehouseStockResponse
+                {
+                    Success = false,
+                    Message = "Company information not found."
+                });
+        }
+
+        var response = await _mediator.Send(
+            new GetWarehouseStockQuery(
+                id,
+                _currentUser.CompanyId));
+
+        if (!response.Success &&
+            response.Message == "Warehouse not found.")
+        {
+            return NotFound(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPost("transfer-stock/{productId:guid}")]
+    public async Task<ActionResult<TransferWarehouseStockResponse>>
+        TransferWarehouseStock(
+            Guid productId,
+            TransferWarehouseStockRequest request)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(
+                new TransferWarehouseStockResponse
+                {
+                    Success = false,
+                    Message = "Company information not found."
+                });
+        }
+
+        var response = await _mediator.Send(
+            new TransferWarehouseStockCommand(
+                productId,
+                _currentUser.CompanyId,
+                request));
+
+        if (!response.Success)
+        {
+            if (response.Message == "Product not found." ||
+                response.Message == "Source warehouse not found." ||
+                response.Message == "Destination warehouse not found.")
+            {
+                return NotFound(response);
+            }
+
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
 }
