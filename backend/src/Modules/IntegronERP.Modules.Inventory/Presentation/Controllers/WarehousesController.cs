@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IntegronERP.Modules.Inventory.Application.Features.Warehouses.Queries;
+using IntegronERP.Modules.Inventory.Domain.Constants;
 
 namespace IntegronERP.Modules.Inventory.Presentation.Controllers;
 
@@ -226,6 +227,125 @@ public class WarehousesController : ControllerBase
             if (response.Message == "Product not found." ||
                 response.Message == "Source warehouse not found." ||
                 response.Message == "Destination warehouse not found.")
+            {
+                return NotFound(response);
+            }
+
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpGet("{id:guid}/stock-movements")]
+    public async Task<
+        ActionResult<GetWarehouseStockMovementsResponse>>
+        GetStockMovements(
+            Guid id,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 20,
+            [FromQuery]
+            WarehouseStockMovementType? movementType = null,
+            [FromQuery] DateTime? fromDate = null,
+            [FromQuery] DateTime? toDate = null)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(
+                new GetWarehouseStockMovementsResponse
+                {
+                    Success = false,
+                    Message = "Company information not found."
+                });
+        }
+
+        if (page < 1)
+        {
+            return BadRequest(
+                new GetWarehouseStockMovementsResponse
+                {
+                    Success = false,
+                    Message =
+                        "Page must be greater than or equal to 1."
+                });
+        }
+
+        if (pageSize < 1 || pageSize > 100)
+        {
+            return BadRequest(
+                new GetWarehouseStockMovementsResponse
+                {
+                    Success = false,
+                    Message =
+                        "Page size must be between 1 and 100."
+                });
+        }
+
+        if (fromDate.HasValue &&
+            toDate.HasValue &&
+            fromDate.Value > toDate.Value)
+        {
+            return BadRequest(
+                new GetWarehouseStockMovementsResponse
+                {
+                    Success = false,
+                    Message =
+                        "From date cannot be later than to date."
+                });
+        }
+
+        var response =
+            await _mediator.Send(
+                new GetWarehouseStockMovementsQuery(
+                    id,
+                    _currentUser.CompanyId,
+                    page,
+                    pageSize,
+                    movementType,
+                    fromDate,
+                    toDate));
+
+        if (!response.Success &&
+            response.Message == "Warehouse not found.")
+        {
+            return NotFound(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPost("{warehouseId:guid}/products/{productId:guid}/return")]
+    public async Task<ActionResult<ReturnWarehouseStockResponse>>
+        ReturnWarehouseStock(
+            Guid warehouseId,
+            Guid productId,
+            ReturnWarehouseStockRequest request)
+    {
+        if (!_currentUser.IsAuthenticated ||
+            _currentUser.CompanyId == Guid.Empty)
+        {
+            return Unauthorized(
+                new ReturnWarehouseStockResponse
+                {
+                    Success = false,
+                    Message = "Company information not found."
+                });
+        }
+
+        var response = await _mediator.Send(
+            new ReturnWarehouseStockCommand(
+                productId,
+                _currentUser.CompanyId,
+                warehouseId,
+                request));
+
+        if (!response.Success)
+        {
+            if (response.Message == "Product not found." ||
+                response.Message == "Warehouse not found." ||
+                response.Message ==
+                    "Product has no stock in this warehouse.")
             {
                 return NotFound(response);
             }

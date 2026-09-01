@@ -1,4 +1,5 @@
 using IntegronERP.Modules.Inventory.Application.Features.Warehouses.DTOs;
+using IntegronERP.Modules.Inventory.Domain.Constants;
 using IntegronERP.Modules.Inventory.Domain.Entities;
 using IntegronERP.Modules.Inventory.Domain.Repositories;
 using IntegronERP.SharedKernel.Interfaces;
@@ -14,17 +15,22 @@ public class TransferWarehouseStockCommandHandler
     private readonly IProductRepository _productRepository;
     private readonly IWarehouseRepository _warehouseRepository;
     private readonly IWarehouseStockRepository _warehouseStockRepository;
+    private readonly IWarehouseStockMovementRepository
+        _warehouseStockMovementRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public TransferWarehouseStockCommandHandler(
         IProductRepository productRepository,
         IWarehouseRepository warehouseRepository,
         IWarehouseStockRepository warehouseStockRepository,
+        IWarehouseStockMovementRepository warehouseStockMovementRepository,
         IUnitOfWork unitOfWork)
     {
         _productRepository = productRepository;
         _warehouseRepository = warehouseRepository;
         _warehouseStockRepository = warehouseStockRepository;
+        _warehouseStockMovementRepository =
+            warehouseStockMovementRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -114,7 +120,8 @@ public class TransferWarehouseStockCommandHandler
             return new TransferWarehouseStockResponse
             {
                 Success = false,
-                Message = "Product has no stock in the source warehouse."
+                Message =
+                    "Product has no stock in the source warehouse."
             };
         }
 
@@ -144,9 +151,19 @@ public class TransferWarehouseStockCommandHandler
                     command.CompanyId,
                     cancellationToken);
 
+        // Capture quantities BEFORE modification
+        var sourceQuantityBefore =
+            sourceStock.Quantity;
+
+        var destinationQuantityBefore =
+            destinationStock?.Quantity ?? 0;
+
         // 9. Reduce source warehouse stock
-        sourceStock.Quantity -= command.Request.Quantity;
-        sourceStock.UpdatedAt = DateTime.UtcNow;
+        sourceStock.Quantity -=
+            command.Request.Quantity;
+
+        sourceStock.UpdatedAt =
+            DateTime.UtcNow;
 
         await _warehouseStockRepository.UpdateAsync(
             sourceStock,
@@ -160,8 +177,10 @@ public class TransferWarehouseStockCommandHandler
                 Id = Guid.NewGuid(),
                 CompanyId = command.CompanyId,
                 ProductId = command.ProductId,
-                WarehouseId = command.Request.ToWarehouseId,
-                Quantity = command.Request.Quantity,
+                WarehouseId =
+                    command.Request.ToWarehouseId,
+                Quantity =
+                    command.Request.Quantity,
                 ReservedQuantity = 0,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
@@ -173,28 +192,117 @@ public class TransferWarehouseStockCommandHandler
         }
         else
         {
-            destinationStock.Quantity += command.Request.Quantity;
-            destinationStock.UpdatedAt = DateTime.UtcNow;
+            destinationStock.Quantity +=
+                command.Request.Quantity;
+
+            destinationStock.UpdatedAt =
+                DateTime.UtcNow;
 
             await _warehouseStockRepository.UpdateAsync(
                 destinationStock,
                 cancellationToken);
         }
 
-        // 11. Commit both changes together
+        // 11. Create TransferOut movement
+        var transferOutMovement =
+            new WarehouseStockMovement
+            {
+                Id = Guid.NewGuid(),
+                CompanyId = command.CompanyId,
+                ProductId = command.ProductId,
+                WarehouseId =
+                    command.Request.FromWarehouseId,
+
+                MovementType =
+                    WarehouseStockMovementType.TransferOut,
+
+                Quantity =
+                    -command.Request.Quantity,
+
+                QuantityBefore =
+                    sourceQuantityBefore,
+
+                QuantityAfter =
+                    sourceStock.Quantity,
+
+                Reference =
+                    command.Request.Reference,
+
+                Notes =
+                    command.Request.Notes,
+
+                CreatedAt =
+                    DateTime.UtcNow
+            };
+
+        await _warehouseStockMovementRepository.AddAsync(
+            transferOutMovement,
+            cancellationToken);
+
+        // 12. Create TransferIn movement
+        var transferInMovement =
+            new WarehouseStockMovement
+            {
+                Id = Guid.NewGuid(),
+                CompanyId = command.CompanyId,
+                ProductId = command.ProductId,
+                WarehouseId =
+                    command.Request.ToWarehouseId,
+
+                MovementType =
+                    WarehouseStockMovementType.TransferIn,
+
+                Quantity =
+                    command.Request.Quantity,
+
+                QuantityBefore =
+                    destinationQuantityBefore,
+
+                QuantityAfter =
+                    destinationStock.Quantity,
+
+                Reference =
+                    command.Request.Reference,
+
+                Notes =
+                    command.Request.Notes,
+
+                CreatedAt =
+                    DateTime.UtcNow
+            };
+
+        await _warehouseStockMovementRepository.AddAsync(
+            transferInMovement,
+            cancellationToken);
+
+        // 13. Commit all changes together
         await _unitOfWork.CommitAsync(
             cancellationToken);
 
+        // 14. Return response
         return new TransferWarehouseStockResponse
         {
             Success = true,
-            Message = "Stock transferred between warehouses successfully.",
-            ProductId = command.ProductId,
-            FromWarehouseId = command.Request.FromWarehouseId,
-            ToWarehouseId = command.Request.ToWarehouseId,
-            TransferredQuantity = command.Request.Quantity,
-            FromWarehouseQuantity = sourceStock.Quantity,
-            ToWarehouseQuantity = destinationStock.Quantity
+            Message =
+                "Stock transferred between warehouses successfully.",
+
+            ProductId =
+                command.ProductId,
+
+            FromWarehouseId =
+                command.Request.FromWarehouseId,
+
+            ToWarehouseId =
+                command.Request.ToWarehouseId,
+
+            TransferredQuantity =
+                command.Request.Quantity,
+
+            FromWarehouseQuantity =
+                sourceStock.Quantity,
+
+            ToWarehouseQuantity =
+                destinationStock.Quantity
         };
     }
 }
