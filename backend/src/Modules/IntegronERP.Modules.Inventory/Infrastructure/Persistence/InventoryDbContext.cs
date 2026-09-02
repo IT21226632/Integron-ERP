@@ -18,6 +18,7 @@ public class InventoryDbContext : DbContext
     public DbSet<Warehouse> Warehouses => Set<Warehouse>();
     public DbSet<WarehouseStock> WarehouseStocks => Set<WarehouseStock>();
     public DbSet<WarehouseStockMovement> WarehouseStockMovements => Set<WarehouseStockMovement>();
+    public DbSet<Supplier> Suppliers => Set<Supplier>();
 
     protected override void OnModelCreating(
         ModelBuilder modelBuilder)
